@@ -2,7 +2,7 @@
 
 - **Autor:** Juan Alonso
 - **Tutor:** Julio Valero
-- **Fecha:** [Fecha de entrega]
+- **Fecha:** 12-07-26
 
 ---
 
