@@ -9,7 +9,7 @@
 
 **Problema y solución.** El proyecto aborda el cuello de botella recurrente en las estrategias de outbound B2B: la construcción y priorización de listas de empresas-objetivo cualificadas. Las herramientas comerciales del mercado (Apollo, ZoomInfo, Google Maps Scrapers) resuelven bien la recolección, pero devuelven listas planas, con duplicados y sin criterio de priorización. La solución propuesta es un sistema que, a partir de un pequeño conjunto de clientes-referencia aportados por el usuario (10 a 20 empresas), aprende automáticamente el perfil ideal de cliente (ICP) mediante técnicas de Machine Learning y prioriza el universo restante por similitud, con explicación individualizada de cada score.
 
-**Refinamiento del alcance tras la Entrega 2.** Siguiendo la recomendación del profesor de acotar el MVP a un único sector y territorio para validar empíricamente la viabilidad de las fuentes antes de diseñar el clasificador, el proyecto se ha concretado en:
+**Refinamiento del alcance tras la Entrega 2.** Siguiendo el feedback recibido de acotar el MVP a un único sector y territorio para validar empíricamente la viabilidad de las fuentes antes de diseñar el clasificador, el proyecto se ha concretado en:
 
 - **Sector de aplicación:** restauración (restaurantes propiamente dichos, incluyendo bares-restaurante y restaurantes de comida rápida).
 - **Territorio piloto de validación empírica:** distrito Centro de Madrid, con arquitectura extensible al resto de España como trabajo futuro.
