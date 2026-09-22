@@ -1,2 +1,4 @@
 data/raw/200085-5-censo-locales.csv
 .env
+venv/
+.DS_Store
