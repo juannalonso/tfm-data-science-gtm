@@ -1,0 +1,42 @@
+{
+  "demo_1_premium_software_reservas": {
+    "descripcion": "Software de reservas premium para restaurantes de alta gama",
+    "seeds": [
+      {
+        "restaurante_id": "b4c626a9f914",
+        "nombre": "Sagardi",
+        "barrio": "CORTES              "
+      },
+      {
+        "restaurante_id": "4c29f8335afa",
+        "nombre": "Miyama",
+        "barrio": "PALACIO             "
+      },
+      {
+        "restaurante_id": "3dfe4198537b",
+        "nombre": "Caluana",
+        "barrio": "SOL                 "
+      }
+    ]
+  },
+  "demo_2_asiatico_distribuidor": {
+    "descripcion": "Distribuidor de productos asiáticos",
+    "seeds": [
+      {
+        "restaurante_id": "268924f9373e",
+        "nombre": "Okashi Sanda",
+        "barrio": "UNIVERSIDAD         "
+      },
+      {
+        "restaurante_id": "9b4c6f30c242",
+        "nombre": "Hunan Restaurant",
+        "barrio": "UNIVERSIDAD         "
+      },
+      {
+        "restaurante_id": "a7da6460e258",
+        "nombre": "Tuk Tuk",
+        "barrio": "JUSTICIA            "
+      }
+    ]
+  }
+}
