@@ -46,9 +46,9 @@ DEMOS: dict[str, dict] = {
             "ambiente formal y presencia digital sofisticada, aunque su cocina es distinta."
         ),
         "seeds": [
-            "rst_435b733a16470b46",  # Sagardi (Cortes)
-            "rst_88542444b6fac0a0",  # Miyama (Palacio)
-            "rst_9c8fb0f600bf348f",  # Caluana (Sol)
+            "b4c626a9f914",  # Sagardi (Cortes)
+            "4c29f8335afa",  # Miyama (Palacio)
+            "3dfe4198537b",  # Caluana (Sol)
         ],
     },
     "demo_asiatico": {
@@ -60,9 +60,9 @@ DEMOS: dict[str, dict] = {
             "ambiente casual/moderno, concentrados en la zona norte del Centro."
         ),
         "seeds": [
-            "rst_1bacc3a494f267e4",  # Okashi Sanda (Universidad)
-            "rst_3ce73ddcd3db92e9",  # Hunan Restaurant (Universidad)
-            "rst_5dd7390802408122",  # Tuk Tuk (Justicia)
+            "268924f9373e",  # Okashi Sanda (Universidad)
+            "9b4c6f30c242",  # Hunan Restaurant (Universidad)
+            "a7da6460e258",  # Tuk Tuk (Justicia)
         ],
     },
 }
