@@ -1,0 +1,4 @@
+Modelo,Recall@100,Lift,Pos. media del seed recuperado
+Baseline aleatorio (esperanza),0.05934718100890208,1.0,—
+Modelo 1 · Similitud coseno,0.0,0.0,1028.8
+Modelo 2 · XGBoost (PU),0.0,0.0,637.0
