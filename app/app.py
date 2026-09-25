@@ -42,13 +42,13 @@ DEMOS: dict[str, dict] = {
         "cliente": "Consultora GTM que vende un CRM/software de reservas a restaurantes de gama alta.",
         "icp_narrativa": (
             "El comercial ha elegido 3 restaurantes que representan su cliente ideal: "
-            "**Sagardi**, **Miyama** y **Caluana**. Los tres comparten posicionamiento premium, "
-            "ambiente formal y presencia digital sofisticada, aunque su cocina es distinta."
+            "**Sagardi**, **Sandó** y **Dray Martina**. Los tres comparten posicionamiento premium, "
+            "presencia digital activa, distribuidos en tres barrios distintos del Centro y con ambientes complementarios (tradicional, formal, moderno)."
         ),
         "seeds": [
             "b4c626a9f914",  # Sagardi (Cortes)
-            "4c29f8335afa",  # Miyama (Palacio)
-            "3dfe4198537b",  # Caluana (Sol)
+            "5ee59f48bde1",  # Sandó (Palacio)
+            "1d4eb6981e34",  # Dray Martina (Justicia)
         ],
     },
     "demo_asiatico": {
