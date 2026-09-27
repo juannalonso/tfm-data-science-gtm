@@ -41,14 +41,16 @@ DEMOS: dict[str, dict] = {
         "titulo": "Demo 1 · Software de reservas premium",
         "cliente": "Consultora GTM que vende un CRM/software de reservas a restaurantes de gama alta.",
         "icp_narrativa": (
-            "El comercial ha elegido 3 restaurantes que representan su cliente ideal: "
-            "**Sagardi**, **Sandó** y **Dray Martina**. Los tres comparten posicionamiento premium, "
+            "El comercial ha elegido 5 restaurantes que representan su cliente ideal: "
+            "**Sagardi**, **Sandó**, **Dray Martina**, **AskuaBarra** y **Gioia**. Los cinco comparten posicionamiento premium, "
             "presencia digital activa, distribuidos en tres barrios distintos del Centro y con ambientes complementarios (tradicional, formal, moderno)."
         ),
         "seeds": [
             "b4c626a9f914",  # Sagardi (Cortes)
             "5ee59f48bde1",  # Sandó (Palacio)
             "1d4eb6981e34",  # Dray Martina (Justicia)
+            "99601101fac4",  # AskuaBarra (Cortes)
+            "8f0ebbb4291d",  # Gioia (Justicia)
         ],
     },
     "demo_asiatico": {
@@ -257,10 +259,10 @@ with tab_cualificar:
     default_labels = [etiqueta_por_id[i] for i in default_ids if i in etiqueta_por_id]
 
     sel_labels = st.multiselect(
-        "Restaurantes seed (elige exactamente 3)",
+        "Restaurantes seed (elige entre 3 y 5)",
         options=list(id_por_etiqueta.keys()),
         default=default_labels,
-        max_selections=3,
+        max_selections=5,
         placeholder="Escribe para buscar por nombre…",
     )
     seeds = [id_por_etiqueta[l] for l in sel_labels]
@@ -271,10 +273,10 @@ with tab_cualificar:
     with col_btn:
         st.markdown("<br>", unsafe_allow_html=True)
         buscar = st.button("🎯 Buscar leads similares", type="primary",
-                           disabled=len(seeds) != 3, use_container_width=True)
+                           disabled=not (3 <= len(seeds) <= 5), use_container_width=True)
 
-    if len(seeds) != 3:
-        st.info(f"Selecciona 3 restaurantes (llevas {len(seeds)}).")
+    if not (3 <= len(seeds) <= 5):
+        st.info(f"Selecciona entre 3 y 5 restaurantes (llevas {len(seeds)}).")
 
     if buscar:
         st.session_state["seeds"] = seeds
