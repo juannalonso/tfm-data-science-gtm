@@ -4,7 +4,7 @@ TFM Data Science e IA — Juan Alonso · Tutor: Julio Valero · 2025-2026
 
 Pestañas:
 - 🔎 Explorar: universo de restaurantes con filtros, KPIs y mapa.
-- 🎯 Cualificar: seleccionas 3 restaurantes como ICP y devuelve top-K similares.
+- 🎯 Cualificar: seleccionas entre 3 y 5 restaurantes como ICP y devuelve top-K similares.
 - ℹ️ Sobre el proyecto: cifras del TFM, fuentes y features del modelo.
 
 Ejecutar desde la raíz del repo:
@@ -217,8 +217,8 @@ with tab_cualificar:
 
     st.markdown(
         "#### Cómo funciona\n"
-        "1. Elige **3 restaurantes** que representen tu cliente ideal (ICP), o carga un preset.\n"
-        "2. El sistema aprende qué caracteriza a esos 3 y **rankea el resto** por similitud coseno.\n"
+        "1. Elige **entre 3 y 5 restaurantes** que representen tu cliente ideal (ICP), o carga un preset.\n"
+        "2. El sistema aprende qué caracteriza a esos ejemplos y **rankea el resto** por similitud coseno.\n"
         "3. Cada lead trae su **perfil enriquecido** (LLM + INE) para arrancar la conversación."
     )
 
@@ -422,7 +422,7 @@ with tab_proyecto:
 
     st.markdown("### La solución")
     st.markdown(
-        "Un sistema que, a partir de **3 restaurantes de referencia** (ICP) aportados "
+        "Un sistema que, a partir de **entre 3 y 5 restaurantes de referencia** (ICP) aportados "
         "por el usuario, aprende automáticamente el perfil ideal mediante técnicas de "
         "*few-shot learning* y prioriza el universo restante por similitud coseno."
     )
