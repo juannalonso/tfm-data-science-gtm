@@ -186,3 +186,101 @@ def calcular_scores(modelo: ModeloSimilitud, ids_seeds: list[str]) -> pd.Series:
     s = pd.Series(scores, index=modelo.ids, name="score_similitud")
     s.loc[list(ids_seeds)] = np.nan
     return s
+
+
+# ============================================================
+# Explicabilidad: descomposición del score por bloques
+# ============================================================
+
+def descomponer_score(
+    modelo: ModeloSimilitud,
+    ids_seeds: list[str],
+    restaurante_id: str,
+    df_gold: pd.DataFrame,
+) -> dict:
+    """Descompone el score de un restaurante contra el centroide del ICP en:
+
+    - score_total: coseno global del vector combinado (551 dims).
+    - score_estructural: coseno solo sobre las features estructuradas.
+    - score_semantico: coseno solo sobre el embedding LLM.
+    - peso_estructural / peso_semantico: contribución de cada bloque al
+      numerador del coseno global (suman 1). Da una intuición de qué bloque
+      ha pesado más en el score final.
+    - coincidencias: lista de variables categóricas donde el lead comparte
+      valor con al menos una de las seeds (barrio, ambiente, presencia
+      digital, epígrafe).
+    """
+    # Máscara de seeds e índice del restaurante
+    mask_seeds = modelo.ids.isin(ids_seeds).values
+    if mask_seeds.sum() == 0:
+        raise ValueError("Ninguna seed encontrada en el modelo.")
+
+    idx_arr = modelo.ids[modelo.ids == restaurante_id].index
+    if len(idx_arr) == 0:
+        raise ValueError(f"restaurante_id {restaurante_id} no está en el modelo.")
+    idx_r = int(idx_arr[0])
+
+    # Split del vector en bloque estructural vs bloque embedding
+    n_est = sum(1 for f in modelo.feature_names if not f.startswith("emb_"))
+    X_est_all = modelo.X[:, :n_est]
+    X_emb_all = modelo.X[:, n_est:]
+
+    v_total = modelo.X[idx_r]
+    v_est = X_est_all[idx_r]
+    v_emb = X_emb_all[idx_r]
+
+    c_total = modelo.X[mask_seeds].mean(axis=0)
+    c_est = X_est_all[mask_seeds].mean(axis=0)
+    c_emb = X_emb_all[mask_seeds].mean(axis=0) if X_emb_all.shape[1] > 0 else np.array([])
+
+    def _cos1(a: np.ndarray, b: np.ndarray) -> float:
+        denom = np.linalg.norm(a) * np.linalg.norm(b) + 1e-12
+        return float(np.dot(a, b) / denom)
+
+    score_total = _cos1(v_total, c_total)
+    score_estructural = _cos1(v_est, c_est)
+    score_semantico = _cos1(v_emb, c_emb) if X_emb_all.shape[1] > 0 else 0.0
+
+    # Contribución de cada bloque al numerador del coseno global
+    contrib_est = float(np.dot(v_est, c_est))
+    contrib_emb = float(np.dot(v_emb, c_emb)) if X_emb_all.shape[1] > 0 else 0.0
+    contrib_total = contrib_est + contrib_emb
+    if abs(contrib_total) > 1e-9:
+        peso_est = contrib_est / contrib_total
+        peso_emb = contrib_emb / contrib_total
+    else:
+        peso_est = 0.5
+        peso_emb = 0.5
+
+    # Coincidencias categóricas con las seeds
+    cats_check = ["barrio", "ambiente", "presencia_digital", "epigrafe_oficial"]
+    seeds_rows = df_gold[df_gold["restaurante_id"].isin(ids_seeds)]
+    lead_row = df_gold[df_gold["restaurante_id"] == restaurante_id]
+    if len(lead_row) == 0:
+        lead_row_dict = {}
+    else:
+        lead_row_dict = lead_row.iloc[0].to_dict()
+
+    coincidencias = []
+    for cat in cats_check:
+        if cat not in df_gold.columns:
+            continue
+        seed_vals = seeds_rows[cat].dropna().astype(str).str.strip().unique().tolist()
+        lead_val = lead_row_dict.get(cat)
+        lead_val_str = str(lead_val).strip() if pd.notna(lead_val) else None
+        coincide = lead_val_str in seed_vals if lead_val_str else False
+        coincidencias.append({
+            "variable": cat,
+            "lead_valor": lead_val_str if lead_val_str else "—",
+            "seed_valores": seed_vals,
+            "coincide": coincide,
+        })
+
+    return {
+        "score_total": score_total,
+        "score_estructural": score_estructural,
+        "score_semantico": score_semantico,
+        "peso_estructural": peso_est,
+        "peso_semantico": peso_emb,
+        "coincidencias": coincidencias,
+    }

@@ -19,7 +19,7 @@ import streamlit as st
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src.similitud import construir_vectores, calcular_scores  # noqa: E402
+from src.similitud import construir_vectores, calcular_scores, descomponer_score  # noqa: E402
 
 # =========================================================================== #
 # Configuración
@@ -372,6 +372,32 @@ with tab_cualificar:
             st.markdown(f"- Delivery: {'✅' if r['ofrece_delivery'] else '—'}")
             st.markdown(f"- Takeaway: {'✅' if r['ofrece_takeaway'] else '—'}")
             st.markdown(f"- Competencia en 500 m: **{int(r['competencia_500m'])}**")
+
+        # Explicabilidad del score - descomposicion por bloques
+        st.markdown("---")
+        with st.expander("🔍 ¿Por que este score? Descomposicion por bloques", expanded=False):
+            try:
+                desc = descomponer_score(modelo, seeds, r["restaurante_id"], df)
+                c1, c2, c3 = st.columns(3)
+                with c1:
+                    st.metric("Score total", f"{desc['score_total']:.3f}")
+                with c2:
+                    st.metric("Similitud estructural", f"{desc['score_estructural']:.3f}",
+                              help="Coseno sobre las 167 features estructuradas (barrio, ambiente, competencia, renta, etc.)")
+                with c3:
+                    st.metric("Similitud semantica", f"{desc['score_semantico']:.3f}",
+                              help="Coseno sobre el embedding del resumen LLM (384 dims)")
+
+                st.markdown("**Coincidencias con el ICP:**")
+                for c in desc["coincidencias"]:
+                    marca = "✅" if c["coincide"] else "⚠️"
+                    var_pretty = c["variable"].replace("_", " ").capitalize()
+                    if c["coincide"]:
+                        st.markdown(f"- {marca} **{var_pretty}**: `{c['lead_valor']}` coincide con alguna seed")
+                    else:
+                        st.markdown(f"- {marca} **{var_pretty}**: `{c['lead_valor']}` no coincide (seeds: {', '.join(c['seed_valores'])})")
+            except Exception as e:
+                st.warning(f"No se puede calcular la descomposicion: {e}")
 
         # Perfil cualitativo LLM
         campos_llm = [c for c in ["ambiente", "presencia_digital",
