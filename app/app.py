@@ -472,16 +472,20 @@ with tab_proyecto:
 
     st.markdown("### Modelo de cualificación")
     st.markdown(
-        "**Modelo 1 · Similitud coseno sobre vector combinado.** "
-        "Se construye un vector por restaurante con features numéricas escaladas, "
-        "banderas booleanas y one-hot de categóricas. El score de cada lead es el "
-        "coseno entre su vector y el centroide del ICP."
+        "**Similitud coseno sobre vector combinado de 551 dimensiones.** "
+        "Cada restaurante se representa con 167 features estructuradas "
+        "(numéricas escaladas, banderas booleanas y one-hot de categóricas) más "
+        "384 dimensiones del embedding semántico del resumen generado por el LLM "
+        "(sentence-transformers/all-MiniLM-L6-v2). El score de cada lead es el "
+        "coseno entre su vector y el centroide del ICP, y se descompone en "
+        "similitud estructural y semántica para explicar cada resultado."
     )
     cols_u = modelo.columnas_usadas
     with st.expander("Features usadas por el modelo", expanded=False):
         st.markdown(f"- **Numéricas:** {', '.join(cols_u['numericas']) or '—'}")
         st.markdown(f"- **Booleanas:** {', '.join(cols_u['booleanas']) or '—'}")
         st.markdown(f"- **Categóricas (one-hot):** {', '.join(cols_u['categoricas']) or '—'}")
+        st.markdown(f"- **Embedding semántico LLM:** {', '.join(cols_u['embedding']) or '—'}")
         if cols_u["excluidas_por_sesgo"]:
             st.markdown(
                 f"- **Excluidas por baja varianza (análisis de sesgo):** "
